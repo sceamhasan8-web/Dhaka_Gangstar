@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#00f0ff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="./manifest.json">
+  <title>Dhaka City Gangstar - 3D Open World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Rajdhani:wght@500;600;700;800&family=Orbitron:wght@600;800;900&family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Rajdhani:wght@500;600;700;800&family=Orbitron:wght@600;800;900&family=Inter:wght@400;500;600;700&display=swap">
+  </noscript>
+  <link rel="stylesheet" href="./src/style.css">
+</head>
+<body>
+  <div id="game-container">
+    <!-- STARTUP LOADING SCREEN -->
+    <div id="startup-loader" style="position: fixed; inset: 0; background: radial-gradient(circle at center, #1e293b 0%, #090d16 100%); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.4s ease; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <div style="font-size: 13px; letter-spacing: 3px; color: #10b981; font-weight: 700; margin-bottom: 8px;">🇧🇩 DHAKA CITY GANGSTAR</div>
+      <div style="font-size: 26px; font-weight: 900; color: #f59e0b; text-shadow: 0 0 20px rgba(245,158,11,0.5); margin-bottom: 24px;">ঢাকা সিটি গ্যাংস্টার</div>
+      <div style="width: 240px; height: 6px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden; margin-bottom: 12px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);">
+        <div id="loader-progress-bar" style="width: 15%; height: 100%; background: linear-gradient(90deg, #10b981, #f59e0b); border-radius: 999px; transition: width 0.3s ease;"></div>
+      </div>
+      <div id="loader-status" style="font-size: 12px; color: #94a3b8; font-weight: 500; text-align: center;">Preparing Dhaka Environment...</div>
+    </div>
+
+    <!-- WebGL Canvas will be injected here -->
+    <canvas id="webgl-canvas"></canvas>
+
+    <!-- CINEMATIC / MAIN MENU OVERLAY (LOBBY) -->
+    <div id="main-menu" class="ui-screen active">
+      <div class="menu-backdrop"></div>
+      
+      <!-- Lobby Quick Utility Bar -->
+      <div class="lobby-top-bar">
+        <button id="btn-lobby-sound" class="btn-lobby-pill" title="Toggle Sound">🔊 AUDIO: ON</button>
+        <button id="btn-lobby-fullscreen" class="btn-lobby-pill" title="Toggle Fullscreen">⛶ FULLSCREEN</button>
+      </div>
+
+      <div class="menu-content">
+        <div class="game-branding">
+          <div class="bengali-tagline">বাপের রাস্তা নয়, কিন্তু সিটি তোমার!</div>
+          <h1 class="game-title">DHAKA CITY<span class="highlight">GANGSTAR</span></h1>
+          <div class="title-sub">OPEN-WORLD 3D ACTION SIMULATOR • DHAKA, BANGLADESH</div>
+        </div>
+
+        <div class="menu-actions">
+          <button id="btn-play" class="btn btn-primary btn-glow">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+            <span class="text">START GAME</span>
+            <span class="subtext">Enter the streets of Dhaka</span>
+          </button>
+          <div class="menu-grid">
+            <button id="btn-character" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg> CHARACTER
+            </button>
+            <button id="btn-garage-menu" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg> GARAGE
+            </button>
+            <button id="btn-settings-menu" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg> SETTINGS
+            </button>
+            <button id="btn-controls-menu" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="menu-icon"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/></svg> CONTROLS
+            </button>
+          </div>
+        </div>
+
+        <div class="menu-footer">
+          <div class="tag-badges">
+            <span class="badge">🇧🇩 DHAKA OPEN WORLD</span>
+            <span class="badge">🛺 CNG & RICKSHAW DRIVING</span>
+            <span class="badge">🚇 METRO RAIL & FLYOVERS</span>
+            <span class="badge">🌧️ MONSOON WEATHER</span>
+          </div>
+          <p class="copyright">Inspired by real Dhaka streetscapes & culture • Built with Three.js & WebGL</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- IN-GAME HUD -->
+    <div id="game-hud" class="ui-layer hidden">
+      <!-- TOP LEFT: PLAYER STATUS & WANTED -->
+      <div class="hud-top-left">
+        <div class="player-card">
+          <div class="avatar-ring" id="hud-avatar">👨🏽</div>
+          <div class="status-bars">
+            <div class="status-name" id="hud-player-name">ASLAM BHAI</div>
+            <div class="bar-container health-bar">
+              <div class="bar-fill" id="health-fill" style="width: 100%;"></div>
+              <span class="bar-label">HP <span id="health-val">100</span></span>
+            </div>
+            <div class="bar-container stamina-bar">
+              <div class="bar-fill" id="stamina-fill" style="width: 100%;"></div>
+              <span class="bar-label">STAMINA</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="wanted-stars" id="wanted-stars">
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+          <span class="star">★</span>
+        </div>
+      </div>
+
+      <!-- TOP RIGHT: MINIMAP, WALLET & STATS -->
+      <div class="hud-top-right">
+        <div class="minimap-frame" id="minimap-container">
+          <canvas id="minimap-canvas" width="160" height="160"></canvas>
+          <div class="compass-marker">N</div>
+          <button id="btn-expand-map" class="btn-minimap-expand" title="Expand Full City Map (M)">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg>
+          </button>
+        </div>
+        <div class="hud-stat-stack">
+          <div class="wallet-badge">
+            <span class="currency-symbol">৳</span>
+            <span class="money-amount" id="hud-money">15,000</span>
+          </div>
+          <div class="time-weather-badge">
+            <span id="hud-clock">02:45 PM</span>
+            <span class="separator">•</span>
+            <span id="hud-weather-icon">☀️</span>
+            <span id="hud-weather-name">SUNNY</span>
+          </div>
+          <div class="district-badge" id="hud-district">
+            <span class="district-icon">📍</span>
+            <span class="district-text" id="hud-district-name">HATIRJHEEL LOOP</span>
+          </div>
+          <!-- Radio mini player -->
+          <div class="radio-pill" id="radio-pill" title="Click to cycle station">
+            <span class="radio-icon">📻</span>
+            <span class="radio-title" id="radio-title">DHAKA BEATS FM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MISSION OBJECTIVE PANEL -->
+      <div class="mission-panel" id="mission-panel">
+        <div class="mission-header">
+          <span class="mission-icon">🎯</span>
+          <span class="mission-type" id="mission-type">STORY MISSION</span>
+        </div>
+        <div class="mission-title" id="mission-title">PURAN DHAKA BIRYANI RUSH</div>
+        <div class="mission-desc" id="mission-desc">Pick up the Haji Biryani parcel from Old Dhaka and rush it to Motijheel corporate bank tower!</div>
+        <div class="mission-stats">
+          <div class="mission-checkpoint">
+            <span class="lbl">DEST:</span>
+            <span class="val" id="mission-dist">480 m</span>
+          </div>
+          <div class="mission-timer" id="mission-timer-container">
+            <span class="lbl">TIME:</span>
+            <span class="val timer-val" id="mission-timer">02:30</span>
+          </div>
+          <div class="mission-reward">
+            <span class="lbl">REWARD:</span>
+            <span class="val reward-val" id="mission-reward">৳ 3,500</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM CENTER: SPEEDOMETER & VEHICLE STATS -->
+      <div class="hud-bottom-center">
+        <div class="speedometer-cluster hidden" id="speedometer-cluster">
+          <div class="gauge-container">
+            <svg class="speed-gauge" viewBox="0 0 160 160">
+              <circle class="gauge-bg" cx="80" cy="80" r="65"></circle>
+              <circle class="gauge-fill" id="speed-gauge-fill" cx="80" cy="80" r="65" stroke-dasharray="408" stroke-dashoffset="408"></circle>
+            </svg>
+            <div class="speed-content">
+              <div class="speed-val" id="speed-number">0</div>
+              <div class="speed-unit">KM/H</div>
+              <div class="gear-tag" id="gear-indicator">D</div>
+            </div>
+          </div>
+          <div class="vehicle-info-bar">
+            <span class="vehicle-name" id="vehicle-name">CNG AUTO</span>
+            <span class="headlight-indicator" id="headlight-indicator">💡 LOW</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTER: INTERACTION PROMPT -->
+      <div class="interaction-prompt" id="interaction-prompt">
+        <span class="key-box" id="prompt-key">E</span>
+        <span class="prompt-text" id="prompt-text">ENTER CNG AUTO</span>
+      </div>
+
+      <!-- CINEMATIC DIALOGUE SUBTITLES -->
+      <div class="subtitle-container hidden" id="subtitle-container">
+        <div class="subtitle-badge" id="subtitle-badge">
+          <span class="subtitle-icon">🎙️</span>
+          <span class="subtitle-speaker" id="subtitle-speaker">ASLAM BHAI</span>
+        </div>
+        <div class="subtitle-text" id="subtitle-text">"Dhaka city is mine! Done deal!"</div>
+        <div class="subtitle-bengali" id="subtitle-bengali">"ঢাকা সিটি আমার! কাজ খতম!"</div>
+      </div>
+
+      <!-- BANNER ANNOUNCER / NOTIFICATIONS -->
+      <div class="notification-toast" id="notification-toast">
+        <span id="toast-text">WELCOME TO DHAKA CITY</span>
+      </div>
+    </div>
+
+    <!-- FULL SCREEN DISTRICT MAP MODAL -->
+    <div id="map-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card map-modal-card">
+        <div class="modal-header">
+          <h2>🗺️ DHAKA METROPOLITAN CITY MAP</h2>
+          <div class="map-legend">
+            <span class="legend-item"><span class="dot player-dot"></span> Player</span>
+            <span class="legend-item"><span class="dot mission-dot"></span> Objective</span>
+            <span class="legend-item"><span class="dot garage-dot"></span> Mod Garage</span>
+            <span class="legend-item"><span class="dot landmark-dot"></span> Historic Landmark</span>
+          </div>
+          <button class="btn-close" id="btn-close-map">✕</button>
+        </div>
+        <div class="modal-body map-body">
+          <canvas id="fullscreen-map-canvas" width="900" height="650"></canvas>
+          <div class="map-sidebar">
+            <h3>DHAKA DISTRICTS & LANDMARKS</h3>
+            <div class="district-list" id="district-list">
+              <!-- Populated by JS -->
+            </div>
+            <div class="fast-travel-note">Click any discovered landmark to set GPS waypoint navigation!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GARAGE & VEHICLE CUSTOMIZER MODAL -->
+    <div id="garage-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card garage-modal-card">
+        <div class="modal-header">
+          <h2>🔧 DHAKA MOD GARAGE & SHOWROOM</h2>
+          <div class="wallet-badge mini">
+            <span class="currency-symbol">৳</span>
+            <span class="money-amount" id="garage-money">15,000</span>
+          </div>
+          <button class="btn-close" id="btn-close-garage">✕</button>
+        </div>
+        <div class="modal-body garage-body">
+          <div class="vehicle-picker-lane">
+            <button class="v-tab active" data-v="cng">🛺 CNG Auto</button>
+            <button class="v-tab" data-v="rickshaw">🚲 Rickshaw</button>
+            <button class="v-tab" data-v="bus">🚌 Dhaka Bus</button>
+            <button class="v-tab" data-v="sedan">🚗 Corolla Sedan</button>
+            <button class="v-tab" data-v="bike">🏍️ Metro Bike</button>
+            <button class="v-tab" data-v="police">🚓 Police Pick-up</button>
+          </div>
+
+          <div class="garage-customizer-grid">
+            <div class="custom-panel">
+              <h3>🎨 BODY PAINT & ART</h3>
+              <div class="color-palette" id="paint-palette">
+                <!-- Color swatches -->
+              </div>
+
+              <h3>✨ NEON UNDERGLOW</h3>
+              <div class="neon-palette" id="neon-palette">
+                <!-- Neon options -->
+              </div>
+
+              <h3>⚡ PERFORMANCE TUNING</h3>
+              <div class="upgrade-row">
+                <span>Top Speed Engine Kit</span>
+                <button class="btn-buy" id="btn-upgrade-speed">৳ 2,000 (Lv 1)</button>
+              </div>
+              <div class="upgrade-row">
+                <span>Racing Brakes & Grip</span>
+                <button class="btn-buy" id="btn-upgrade-brakes">৳ 1,500 (Lv 1)</button>
+              </div>
+              <div class="upgrade-row">
+                <span>Hydraulic Dual Dhaka Horn</span>
+                <button class="btn-buy" id="btn-upgrade-horn">৳ 800</button>
+              </div>
+            </div>
+
+            <div class="garage-stats-panel">
+              <h3 id="garage-v-title">CNG AUTO-RICKSHAW</h3>
+              <div class="v-stat-row">
+                <span>Top Speed</span>
+                <div class="stat-bar"><div class="fill" id="stat-speed" style="width: 65%;"></div></div>
+              </div>
+              <div class="v-stat-row">
+                <span>Acceleration</span>
+                <div class="stat-bar"><div class="fill" id="stat-accel" style="width: 70%;"></div></div>
+              </div>
+              <div class="v-stat-row">
+                <span>Handling / Agility</span>
+                <div class="stat-bar"><div class="fill" id="stat-handle" style="width: 90%;"></div></div>
+              </div>
+              <div class="v-stat-row">
+                <span>Durability</span>
+                <div class="stat-bar"><div class="fill" id="stat-armor" style="width: 50%;"></div></div>
+              </div>
+
+              <div class="garage-actions">
+                <button id="btn-spawn-vehicle" class="btn btn-primary btn-glow">SPAWN THIS RIDE IN DHAKA</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHARACTER SELECT MODAL -->
+    <div id="character-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>👤 SELECT YOUR DHAKA GANGSTAR</h2>
+          <button class="btn-close" id="btn-close-char">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="character-cards-grid" id="char-grid">
+            <div class="char-card active" data-char="aslam">
+              <div class="char-icon">🧔🏽‍♂️</div>
+              <h3>ASLAM BHAI</h3>
+              <p class="char-role">Old Dhaka Legend</p>
+              <p class="char-bio">Wears traditional Black Punjabi and sunglasses. Respected across Chowk Bazaar and Sadarghat.</p>
+              <div class="char-perk">Perk: +15% Intimidation & Cash bonus</div>
+            </div>
+            <div class="char-card" data-char="rahim">
+              <div class="char-icon">🏃🏽‍♂️</div>
+              <h3>RAHIM</h3>
+              <p class="char-role">Streets Runner & Courier</p>
+              <p class="char-bio">Knows every goli, shortcut and traffic gap from Farmgate to Dhanmondi.</p>
+              <div class="char-perk">Perk: +25% Sprint Stamina & Rickshaw speed</div>
+            </div>
+            <div class="char-card" data-char="shanto">
+              <div class="char-icon">🕶️</div>
+              <h3>SHANTO</h3>
+              <p class="char-role">Hatirjheel Midnight Racer</p>
+              <p class="char-bio">Fastest CNG & bike drifter in Gulshan and Banani.</p>
+              <div class="char-perk">Perk: +20% Vehicle drift handling & boost</div>
+            </div>
+            <div class="char-card" data-char="maya">
+              <div class="char-icon">👩🏽</div>
+              <h3>MAYA</h3>
+              <p class="char-role">DU Tech Specialist</p>
+              <p class="char-bio">Curzon Hall physics graduate, handles security and high-tech gear.</p>
+              <div class="char-perk">Perk: Fast waypoint hacking & discount at garages</div>
+            </div>
+          </div>
+          <div class="char-actions">
+            <button id="btn-confirm-char" class="btn btn-primary">CONFIRM CHARACTER</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>⚙️ GAME SETTINGS</h2>
+          <button class="btn-close" id="btn-close-settings">✕</button>
+        </div>
+        <div class="modal-body settings-grid">
+          <div class="setting-group">
+            <h3>GRAPHICS PRESET</h3>
+            <div class="toggle-group" id="graphics-preset-group">
+              <button class="t-btn" data-preset="low">LOW</button>
+              <button class="t-btn" data-preset="medium">MED</button>
+              <button class="t-btn active" data-preset="high">HIGH</button>
+              <button class="t-btn" data-preset="ultra">ULTRA</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>TIME OF DAY</h3>
+            <div class="toggle-group" id="time-preset-group">
+              <button class="t-btn" data-time="morning">Morning</button>
+              <button class="t-btn active" data-time="afternoon">Noon</button>
+              <button class="t-btn" data-time="sunset">Sunset</button>
+              <button class="t-btn" data-time="night">Night</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>WEATHER</h3>
+            <div class="toggle-group" id="weather-preset-group">
+              <button class="t-btn active" data-weather="clear">Sunny</button>
+              <button class="t-btn" data-weather="cloudy">Cloudy</button>
+              <button class="t-btn" data-weather="rain">Monsoon Rain</button>
+              <button class="t-btn" data-weather="heavyRain">Storm & Thunder</button>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>AUDIO VOLUMES</h3>
+            <div class="slider-row">
+              <span>Master Volume</span>
+              <input type="range" id="vol-master" min="0" max="100" value="85">
+            </div>
+            <div class="slider-row">
+              <span>Voice Dialogue</span>
+              <input type="range" id="vol-voice" min="0" max="100" value="90">
+            </div>
+            <div class="slider-row">
+              <span>Sound Effects (SFX)</span>
+              <input type="range" id="vol-sfx" min="0" max="100" value="80">
+            </div>
+            <div class="slider-row">
+              <span>Traffic & Horns</span>
+              <input type="range" id="vol-traffic" min="0" max="100" value="75">
+            </div>
+            <div class="slider-row">
+              <span>Nature & Environment</span>
+              <input type="range" id="vol-env" min="0" max="100" value="70">
+            </div>
+            <div class="slider-row">
+              <span>Music & Radio</span>
+              <input type="range" id="vol-music" min="0" max="100" value="65">
+            </div>
+            <button class="btn btn-secondary" id="btn-toggle-mute" style="margin-top: 8px; width: 100%;">🔊 Mute / Unmute Audio</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+              <span>Subtitles</span>
+              <label class="switch" style="position: relative; display: inline-block; width: 44px; height: 24px;">
+                <input type="checkbox" id="chk-subtitles" checked style="opacity: 0; width: 0; height: 0;">
+                <span class="slider round" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2ecc71; border-radius: 24px; transition: .4s;"></span>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <span>Language</span>
+              <select id="select-voice-lang" style="background: rgba(20,25,35,0.9); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 4px 8px; border-radius: 6px; font-size: 12px;">
+                <option value="both" selected>Both (EN + BN)</option>
+                <option value="bangla">Bangla (বাংলা)</option>
+                <option value="english">English</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="setting-group">
+            <h3>GAME DATA</h3>
+            <button class="btn btn-secondary" id="btn-save-game">💾 Save Game (IndexedDB)</button>
+            <button class="btn btn-danger" id="btn-reset-game">⚠️ Reset Progress</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS GUIDE MODAL -->
+    <div id="controls-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2>🎮 CONTROLS & HOW TO PLAY</h2>
+          <button class="btn-close" id="btn-close-controls">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="controls-table">
+            <div class="ctrl-row"><span class="k">W / A / S / D</span><span>Walk / Sprint / Steer Vehicle & Accelerate / Reverse</span></div>
+            <div class="ctrl-row"><span class="k">Space</span><span>Jump (on foot) / Handbrake & Drift (in vehicle)</span></div>
+            <div class="ctrl-row"><span class="k">Shift</span><span>Sprint (on foot) / Nitro Boost (in vehicle)</span></div>
+            <div class="ctrl-row"><span class="k">E</span><span>Enter / Exit Vehicle</span></div>
+            <div class="ctrl-row"><span class="k">F</span><span>Rickshaw Bell "Tring-Tring" / Bus & Car Hydraulic Horn / Talk to NPC</span></div>
+            <div class="ctrl-row"><span class="k">C</span><span>Switch Camera (3rd Close, 3rd Far, 1st Person / Hood, Cinematic)</span></div>
+            <div class="ctrl-row"><span class="k">M</span><span>Toggle Full Dhaka City Map & GPS Navigation</span></div>
+            <div class="ctrl-row"><span class="k">H</span><span>Toggle Headlights / Rickshaw Lantern</span></div>
+            <div class="ctrl-row"><span class="k">R</span><span>Reset / Flip Vehicle Upright</span></div>
+            <div class="ctrl-row"><span class="k">G</span><span>Open Garage Customizer</span></div>
+            <div class="ctrl-row"><span class="k">Mouse Drag / Move</span><span>Orbit & Rotate 360° Camera View</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEDICATED PAUSE MODAL -->
+    <div id="pause-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card pause-modal-card">
+        <div class="modal-header">
+          <h2>⏸️ GAME PAUSED</h2>
+          <div class="pause-subtitle">DHAKA CITY GANGSTAR</div>
+        </div>
+        <div class="modal-body">
+          <div class="pause-menu-actions">
+            <button id="btn-pause-resume" class="btn btn-primary btn-glow">
+              <span class="icon">▶</span> RESUME GAME
+            </button>
+            <button id="btn-pause-restart" class="btn btn-secondary">
+              <span class="icon">🔄</span> RESTART GAME
+            </button>
+            <button id="btn-pause-settings" class="btn btn-secondary">
+              <span class="icon">⚙️</span> SETTINGS
+            </button>
+            <button id="btn-pause-lobby" class="btn btn-danger">
+              <span class="icon">🏠</span> RETURN TO LOBBY
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME OVER / WASTED MODAL -->
+    <div id="game-over-modal" class="ui-screen modal-screen hidden">
+      <div class="modal-card gameover-modal-card">
+        <h1 class="wasted-title">WASTED</h1>
+        <p class="wasted-sub">Busted by Dhaka Police or Downed in the Streets!</p>
+        <div class="gameover-actions">
+          <button id="btn-gameover-respawn" class="btn btn-primary btn-glow">
+            <span class="icon">🔄</span> RESPAWN & CONTINUE
+          </button>
+          <button id="btn-gameover-lobby" class="btn btn-secondary">
+            <span class="icon">🏠</span> MAIN MENU LOBBY
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
+
