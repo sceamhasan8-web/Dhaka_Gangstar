@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background Gradient -->
+    <radialGradient id="skyGlow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="45%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </radialGradient>
+
+    <!-- Sunset / City Horizon Glow -->
+    <linearGradient id="horizonGlow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffedd5" stop-opacity="0.8"/>
+      <stop offset="30%" stop-color="#f59e0b" stop-opacity="0.6"/>
+      <stop offset="70%" stop-color="#dc2626" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </linearGradient>
+
+    <!-- Highway Perspective Gradient -->
+    <linearGradient id="roadGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="35%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+
+    <!-- Neon Gold Road Stripes -->
+    <linearGradient id="roadLineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="1"/>
+    </linearGradient>
+
+    <!-- Car Red Neon Glow -->
+    <filter id="neonRedGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Golden Horizon Filter -->
+    <filter id="goldAura" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Bangladesh Emerald Accent Gradient -->
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="50%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+
+    <!-- Speed Streaks Gradient -->
+    <linearGradient id="speedLight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00f0ff" stop-opacity="0"/>
+      <stop offset="70%" stop-color="#00f0ff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="1"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 1. Deep Space / Night Sky Canvas -->
+  <rect width="1024" height="1024" fill="url(#skyGlow)"/>
+
+  <!-- 2. Atmospheric Dhaka Horizon Glow & Sun Disk -->
+  <ellipse cx="512" cy="520" rx="420" ry="240" fill="url(#horizonGlow)" filter="url(#goldAura)"/>
+  <circle cx="512" cy="500" r="140" fill="#f59e0b" opacity="0.3" filter="url(#goldAura)"/>
+  <circle cx="512" cy="500" r="80" fill="#fef08a" opacity="0.25"/>
+
+  <!-- 3. Distant Dhaka City Skyline (Background Silhouettes) -->
+  <g fill="#0b1120" opacity="0.85">
+    <rect x="180" y="320" width="48" height="230"/>
+    <rect x="236" y="270" width="62" height="280"/>
+    <polygon points="236,270 267,220 298,270"/>
+    <rect x="310" y="360" width="55" height="190"/>
+    <rect x="375" y="310" width="50" height="240"/>
+    
+    <!-- Central Modern Skyscrapers -->
+    <rect x="435" y="240" width="70" height="310"/>
+    <polygon points="435,240 470,180 505,240"/>
+    <rect x="515" y="260" width="65" height="290"/>
+    <rect x="590" y="330" width="52" height="220"/>
+    <rect x="652" y="280" width="60" height="270"/>
+    <polygon points="652,280 682,230 712,280"/>
+    <rect x="722" y="350" width="48" height="200"/>
+    <rect x="778" y="310" width="56" height="240"/>
+  </g>
+
+  <!-- 4. Dhaka Hatirjheel Iconic Curved Bridge Arch -->
+  <g stroke="#f59e0b" stroke-width="8" fill="none" opacity="0.85">
+    <!-- Main suspension bridge arches -->
+    <path d="M 120 540 Q 340 380 512 390" stroke-width="12" stroke="#fbbf24"/>
+    <path d="M 512 390 Q 684 380 904 540" stroke-width="12" stroke="#fbbf24"/>
+    <!-- Cables -->
+    <line x1="240" y1="440" x2="240" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="320" y1="405" x2="320" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="400" y1="395" x2="400" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="480" y1="392" x2="480" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="544" y1="392" x2="544" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="624" y1="395" x2="624" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="704" y1="405" x2="704" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+    <line x1="784" y1="440" x2="784" y2="540" stroke="#f59e0b" stroke-width="4" opacity="0.7"/>
+  </g>
+
+  <!-- 5. Midground Dhaka Buildings with Window Grid Illumination -->
+  <g fill="#111827">
+    <rect x="140" y="380" width="80" height="200"/>
+    <rect x="230" y="340" width="75" height="240"/>
+    <rect x="715" y="340" width="85" height="240"/>
+    <rect x="810" y="390" width="75" height="190"/>
+  </g>
+  <!-- Window Lights -->
+  <g fill="#fbbf24" opacity="0.75">
+    <circle cx="250" cy="370" r="3"/><circle cx="270" cy="370" r="3"/><circle cx="290" cy="370" r="3"/>
+    <circle cx="250" cy="390" r="3"/><circle cx="270" cy="390" r="3"/><circle cx="290" cy="390" r="3"/>
+    <circle cx="250" cy="420" r="3"/><circle cx="270" cy="420" r="3"/><circle cx="290" cy="420" r="3"/>
+    <circle cx="250" cy="450" r="3"/><circle cx="270" cy="450" r="3"/><circle cx="290" cy="450" r="3"/>
+    <circle cx="735" cy="370" r="3"/><circle cx="755" cy="370" r="3"/><circle cx="775" cy="370" r="3"/>
+    <circle cx="735" cy="400" r="3"/><circle cx="755" cy="400" r="3"/><circle cx="775" cy="400" r="3"/>
+    <circle cx="735" cy="430" r="3"/><circle cx="755" cy="430" r="3"/><circle cx="775" cy="430" r="3"/>
+  </g>
+
+  <!-- 6. Perspective Road & Highway -->
+  <polygon points="512,530 40,1024 984,1024" fill="url(#roadGrad)"/>
+
+  <!-- Road Borders / Curbs with Emerald Bangladesh Trim -->
+  <polygon points="508,530 512,530 984,1024 956,1024" fill="url(#emeraldGrad)" opacity="0.9"/>
+  <polygon points="512,530 516,530 68,1024 40,1024" fill="url(#emeraldGrad)" opacity="0.9"/>
+
+  <!-- Perspective Center Lines (Glowing Gold Street Markings) -->
+  <polygon points="511,540 513,540 514,570 510,570" fill="url(#roadLineGrad)"/>
+  <polygon points="510,590 514,590 516,630 508,630" fill="url(#roadLineGrad)"/>
+  <polygon points="508,655 516,655 519,710 505,710" fill="url(#roadLineGrad)"/>
+  <polygon points="505,745 519,745 523,820 501,820" fill="url(#roadLineGrad)"/>
+  <polygon points="500,865 524,865 530,970 494,970" fill="url(#roadLineGrad)"/>
+
+  <!-- Side Motion Speed Lines -->
+  <line x1="490" y1="540" x2="220" y2="1024" stroke="url(#speedLight)" stroke-width="4" opacity="0.4"/>
+  <line x1="534" y1="540" x2="804" y2="1024" stroke="url(#speedLight)" stroke-width="4" opacity="0.4"/>
+
+  <!-- 7. High-Speed Gangstar Sports Car (Centered in Safe Zone) -->
+  <g transform="translate(512, 770)">
+    <!-- Ground Neon Underglow (Crimson & Emerald) -->
+    <ellipse cx="0" cy="90" rx="280" ry="40" fill="#dc2626" opacity="0.6" filter="url(#neonRedGlow)"/>
+    <ellipse cx="0" cy="85" rx="200" ry="25" fill="#10b981" opacity="0.4" filter="url(#neonRedGlow)"/>
+
+    <!-- Car Body Shadow -->
+    <ellipse cx="0" cy="78" rx="240" ry="32" fill="#000000" opacity="0.9"/>
+
+    <!-- Rear Wheels -->
+    <rect x="-240" y="45" width="48" height="52" rx="14" fill="#030712" stroke="#374151" stroke-width="4"/>
+    <rect x="192" y="45" width="48" height="52" rx="14" fill="#030712" stroke="#374151" stroke-width="4"/>
+    <!-- Wheel Rim Red Glow -->
+    <circle cx="-216" cy="71" r="14" fill="#ef4444" opacity="0.5"/>
+    <circle cx="216" cy="71" r="14" fill="#ef4444" opacity="0.5"/>
+
+    <!-- Wide Aerodynamic Sports Car Chassis (Rear View) -->
+    <path d="M -220 55 
+             L -205 15 
+             L -150 -10 
+             L -95 -75 
+             L 95 -75 
+             L 150 -10 
+             L 205 15 
+             L 220 55 
+             L 200 75 
+             L -200 75 Z" 
+          fill="#111827" stroke="#374151" stroke-width="5"/>
+
+    <!-- Roof & Cabin Glass (Deep Tinted with Sunset Reflection) -->
+    <path d="M -90 -70 
+             L -135 -10 
+             L 135 -10 
+             L 90 -70 Z" 
+          fill="#0f172a" stroke="#60a5fa" stroke-width="2"/>
+    <path d="M -75 -65 L -115 -15 L 0 -15 L 0 -65 Z" fill="#38bdf8" opacity="0.25"/>
+
+    <!-- Aggressive Carbon GT Rear Wing / Spoiler -->
+    <rect x="-180" y="-85" width="360" height="14" rx="7" fill="#1f2937" stroke="#9ca3af" stroke-width="3"/>
+    <line x1="-120" y1="-71" x2="-100" y2="-45" stroke="#4b5563" stroke-width="8"/>
+    <line x1="120" y1="-71" x2="100" y2="-45" stroke="#4b5563" stroke-width="8"/>
+
+    <!-- Tailgate & Rear Bumper Body Lines -->
+    <path d="M -170 30 L -90 40 L 90 40 L 170 30" stroke="#1f2937" stroke-width="6" fill="none"/>
+    <rect x="-45" y="48" width="90" height="26" rx="4" fill="#030712" stroke="#f59e0b" stroke-width="2"/>
+    <!-- License Plate: DHAKA METRO -->
+    <text x="0" y="65" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="12" fill="#fbbf24" text-anchor="middle" letter-spacing="2">DHAKA</text>
+
+    <!-- Dual Exhaust Pipes with Blue Nitro Flame -->
+    <circle cx="-135" cy="74" r="12" fill="#1e293b" stroke="#64748b" stroke-width="3"/>
+    <circle cx="135" cy="74" r="12" fill="#1e293b" stroke="#64748b" stroke-width="3"/>
+    <ellipse cx="-135" cy="74" rx="8" ry="4" fill="#38bdf8" opacity="0.9" filter="url(#neonRedGlow)"/>
+    <ellipse cx="135" cy="74" rx="8" ry="4" fill="#38bdf8" opacity="0.9" filter="url(#neonRedGlow)"/>
+
+    <!-- Signature High-Tech Red LED Light Bar (Continuous Cyber Light Strip) -->
+    <path d="M -190 22 
+             Q 0 32 190 22 
+             L 185 28 
+             Q 0 40 -185 28 Z" 
+          fill="#ef4444" filter="url(#neonRedGlow)"/>
+    <path d="M -175 24 Q 0 33 175 24" stroke="#ffffff" stroke-width="3" fill="none" opacity="0.9"/>
+  </g>
+
+  <!-- 8. Subtle Hexagonal Vignette Border (Safe Area Framing) -->
+  <rect x="16" y="16" width="992" height="992" rx="224" fill="none" stroke="#f59e0b" stroke-width="4" opacity="0.25"/>
+</svg>
+
